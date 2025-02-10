@@ -72,31 +72,22 @@
                 bufferedWriter.write("\r\n");
                 bufferedWriter.flush();
     
-                // Reiniciamos el FileInputStream ya que lo leímos antes
                 inputStream.close();
                 inputStream = new FileInputStream(document);
-    
-                // Enviamos el contenido
-                System.out.println("Enviando contenido del archivo...");
+
                 enviarBytes(inputStream, clienSocket.getOutputStream());
-                System.out.println("Bytes enviados");
             } else {
-                System.out.println("Entrando al else - página 404");
                 document = new File(PATH + "404.html");
                 inputStream = new FileInputStream(PATH + "404.html");
                 byteNum = (int) document.length();
                 
-                // Headers
                 bufferedWriter.write("HTTP/1.0 200 OK\r\n");
                 bufferedWriter.write("Content-Type: text/html\r\n");
                 bufferedWriter.write("Content-Length: " + byteNum + "\r\n");
                 bufferedWriter.write("\r\n");
                 bufferedWriter.flush();
-                
-                // Enviar el contenido
-                System.out.println("Enviando bytes del archivo...");
+
                 enviarBytes(inputStream, clienSocket.getOutputStream());
-                System.out.println("Bytes enviados");
                 inputStream.close();
             }
 
@@ -112,7 +103,6 @@
                 e.printStackTrace();
                 
             } catch (Exception e) {
-                            // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
             
@@ -124,11 +114,9 @@
         }
 
         private static void enviarBytes(InputStream fis, OutputStream os) throws Exception {
-            // Construye un buffer de 1KB para guardar los bytes cuando van hacia el socket.
             byte[] buffer = new byte[1024];
             int bytes = 0;
 
-            // Copia el archivo solicitado hacia el output stream del socket.
             while ((bytes = fis.read(buffer)) != -1) {
                 os.write(buffer, 0, bytes);
             }
